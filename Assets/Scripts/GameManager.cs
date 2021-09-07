@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (_coin == null || _player == null || _levels == null || textScore == null || textHealth == null || textCoins == null || timer == null || resultScore == null || resultCoin == null || resultTable == null)
+            throw new MissingReferenceException();
+
         Self = this;
     }
 

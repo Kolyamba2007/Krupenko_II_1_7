@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (animator == null || stats == null) throw new MissingReferenceException();
+
         controls = new NewInputSystem();
     }
     private void Start()

@@ -5,8 +5,10 @@ public class MenuManager : MonoBehaviour
 {
     public void LoadGameScene(int e)
     {
-        var r = SceneManager.LoadSceneAsync(e);
+        SceneManager.LoadSceneAsync(e);
+
         Time.timeScale = 1;
+        DebugManager.Log("Level loaded.");
     }
 
     public void Exit()

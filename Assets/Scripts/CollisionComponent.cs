@@ -4,6 +4,11 @@ public class CollisionComponent : MonoBehaviour
 {
     public PlayerController plr;
 
+    private void Awake()
+    {
+        if (plr == null) throw new MissingReferenceException();
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Ground")
