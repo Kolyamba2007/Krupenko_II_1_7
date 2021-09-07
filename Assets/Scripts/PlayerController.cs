@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using static UnityEngine.InputSystem.InputAction;
+using UnityEngine.InputSystem;
 
 //Управление персонажа осуществляется с помощью (space - left shift - a - d) или стрелочек //Рекомендую управление стрелочками
 
@@ -22,34 +23,12 @@ public class PlayerController : MonoBehaviour
     {
         controls = new NewInputSystem();
     }
-
-    private void OnEnable()
-    {
-        controls.Arrows.Enable();
-
-        controls.Arrows.Jump.started += Jump;
-        controls.Arrows.Slide.started += Slide;
-        controls.Arrows.RightMove.started += RightMove;
-        controls.Arrows.LeftMove.started += LeftMove;
-    }
-
-    private void OnDisable()
-    {
-        controls.Arrows.Jump.started -= Jump;
-        controls.Arrows.Slide.started -= Slide;
-        controls.Arrows.RightMove.started -= RightMove;
-        controls.Arrows.LeftMove.started -= LeftMove;
-
-        controls.Arrows.Disable();
-    }
-
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         playerCollider = GetComponent<CapsuleCollider>();
     }
-
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         stats.speed += 0.0005f;
         animator.SetFloat("speed", stats.speed / 10);
@@ -59,13 +38,70 @@ public class PlayerController : MonoBehaviour
             Run();
         }
     }
+    private void OnEnable()
+    {
+        EnableInput(true);
+        SubscribeInput(true);
+    }
+    private void OnDisable()
+    {
+        SubscribeInput(false);
+    }
+
+    private void EnableInput(bool enabled)
+    {
+        if (enabled)
+        {
+            controls.Arrows.Enable();
+#if UNITY_EDITOR
+            controls.WASD.Enable();
+#endif
+        }
+        else
+        {
+            controls.Arrows.Disable();
+#if UNITY_EDITOR
+            controls.WASD.Disable();
+#endif
+        }
+    }
+    private void SubscribeInput(bool isSubscribed)
+    {
+        if (isSubscribed)
+        {
+#if UNITY_EDITOR
+            controls.WASD.Jump.started += Jump;
+            controls.WASD.Slide.started += Slide;
+            controls.WASD.RightMove.started += RightMove;
+            controls.WASD.LeftMove.started += LeftMove;
+#endif
+            controls.Arrows.Jump.started += Jump;
+            controls.Arrows.Slide.started += Slide;
+            controls.Arrows.RightMove.started += RightMove;
+            controls.Arrows.LeftMove.started += LeftMove;
+        }
+        else
+        {
+#if UNITY_EDITOR
+            controls.WASD.Jump.started -= Jump;
+            controls.WASD.Slide.started -= Slide;
+            controls.WASD.RightMove.started -= RightMove;
+            controls.WASD.LeftMove.started -= LeftMove;
+            controls.WASD.Disable();
+#endif
+            controls.Arrows.Jump.started -= Jump;
+            controls.Arrows.Slide.started -= Slide;
+            controls.Arrows.RightMove.started -= RightMove;
+            controls.Arrows.LeftMove.started -= LeftMove;
+            controls.Arrows.Disable();
+        }
+    }
 
     void Run() //Двигает персонажа постоянно вперед
     {
         Vector3 newMovePos = new Vector3(0, rb.velocity.y, stats.speed);
         rb.velocity = newMovePos;
     }
-
     void RightMove(CallbackContext contex) //Триггер нажатия на клавишу для передвижения вправо
     {
         if(!isInvokingCoroutine && currentSide != Side.right)
@@ -86,7 +122,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Move());
         }
     }
-
     void LeftMove(CallbackContext contex) //Триггер нажатия на клавишу для передвижения влево
     {
         if(!isInvokingCoroutine && currentSide != Side.left)
@@ -107,7 +142,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Move());
         }
     }
-
     void Jump(CallbackContext contex) //Прыжок
     {
         if(isGrounded)
@@ -128,7 +162,6 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isGrounded", false);
         }
     }
-
     void Slide(CallbackContext contex) //Подкат или резкий толчок вниз в режиме прыжка
     {
         if(isGrounded)
@@ -139,7 +172,6 @@ public class PlayerController : MonoBehaviour
         else
             rb.velocity = new Vector3(rb.velocity.x, -stats.jumpForce, rb.velocity.z);
     }
-
     IEnumerator Move() //Смещение в одну из сторон
     {
         isInvokingCoroutine = true;
@@ -162,11 +194,10 @@ public class PlayerController : MonoBehaviour
         isInvokingCoroutine = false;
         StopCoroutine(Move());
     }
-
     public IEnumerator Return() //Откат положения персонажа при столкновении с препятствием
     {
         isReturn = true;
-        controls.Arrows.Disable();
+        EnableInput(false);
 
         rb.isKinematic = true;
         playerCollider.enabled = false;
@@ -207,12 +238,11 @@ public class PlayerController : MonoBehaviour
             isDirt = false;
         }
         isGrounded = true;
-        
-        controls.Arrows.Enable();
+
+        EnableInput(true);
         isReturn = false;
         StopCoroutine(Return());
     }
-
     IEnumerator Sliding() //Подкат
     {
         isSliding = true;

@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
         textHealth.text = health.ToString();
 
         resultTable.enabled = false;
+
+        DebugManager.Log("Game Started");
+
         StartCoroutine(Timer());
     }
 
