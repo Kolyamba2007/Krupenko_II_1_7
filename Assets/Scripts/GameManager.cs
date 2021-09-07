@@ -59,9 +59,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadGameScene()
+    public void LoadGameScene(int e)
     {
-        var r = SceneManager.LoadSceneAsync(0);
+        var r = SceneManager.LoadSceneAsync(e);
         Time.timeScale = 1;
     }
 
