@@ -60,9 +60,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LoadGameScene()
+    public void LoadGameScene(int e)
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync(e);
+
         Time.timeScale = 1;
         DebugManager.Log("Level loaded.");
     }
