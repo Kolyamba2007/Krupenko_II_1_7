@@ -1,0 +1,18 @@
+ [18:19:20] Game Started
+ [18:19:24] Player collected a coin. Current score: 1.
+ [18:19:24] Player collected a coin. Current score: 2.
+ [18:19:24] Player collected a coin. Current score: 3.
+ [18:19:28] Player collected a coin. Current score: 4.
+ [18:19:29] Player collected a coin. Current score: 5.
+ [18:19:29] Player collected a coin. Current score: 6.
+ [18:19:29] Player collected a coin. Current score: 7.
+ [18:19:29] Player collected a coin. Current score: 8.
+ [18:19:30] Player collected a coin. Current score: 9.
+ [18:19:30] Player collected a coin. Current score: 10.
+ [18:19:30] Player collected a coin. Current score: 11.
+ [18:19:30] Player collected a coin. Current score: 12.
+ [18:19:32] Player collected a coin. Current score: 13.
+ [18:19:34] Player recieved damage. Current health: 2.
+ [18:19:37] Player recieved damage. Current health: 1.
+ [18:19:39] Player collected a coin. Current score: 14.
+ [18:19:39] Player collected a coin. Current score: 15.

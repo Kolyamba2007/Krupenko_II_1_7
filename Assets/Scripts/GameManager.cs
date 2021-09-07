@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
         resultTable.enabled = false;
 
-        DebugManager.Log("Game Started");
+        DebugManager.Log("Game started.");
 
         StartCoroutine(Timer());
     }
@@ -46,10 +46,11 @@ public class GameManager : MonoBehaviour
     {
         health--;
         textHealth.text = health.ToString();
+        DebugManager.Log($"Player recieved damage. Current health: {health}.");
 
         if(health <= 0)
         {
-            //UnityEditor.EditorApplication.isPaused = true;
+            DebugManager.Log($"Player lost. Current score: {coinCount}.");
 
             Time.timeScale = 0;
             resultScore.text = textScore.text;
@@ -61,15 +62,17 @@ public class GameManager : MonoBehaviour
 
     public void LoadGameScene(int e)
     {
-        var r = SceneManager.LoadSceneAsync(e);
+        SceneManager.LoadSceneAsync(e);
+
         Time.timeScale = 1;
+        DebugManager.Log("Level loaded.");
     }
 
     public void CoinCollected(GameObject obj)
     {
         coinCount++;
         textCoins.text = coinCount.ToString();
-
+        DebugManager.Log($"Player collected a coin. Current score: {coinCount}.");
         Destroy(obj);
     }
 
